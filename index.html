@@ -11,7 +11,7 @@
 @media(max-width:900px){.shell{grid-template-columns:210px 1fr}.stats{grid-template-columns:repeat(2,1fr)}.content{padding:25px 22px}.topbar{padding:0 22px}}
 @media(max-width:650px){.shell{display:block}.sidebar{display:none}.topbar{height:62px;padding:0 16px}.mobile-menu{display:block}.topbar .user span{display:none}.content{padding:23px 15px 38px}.heading{align-items:flex-start;flex-direction:column}.heading h1{font-size:24px}.stats{gap:9px}.card{padding:14px}.stat-value{font-size:23px}.grid2{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.mobile-nav{background:var(--green);padding:8px 12px;grid-template-columns:repeat(3,1fr);gap:5px}.mobile-nav.open{display:grid}.mobile-nav button{border:0;border-radius:8px;background:transparent;color:#e7f0e9;padding:9px 3px;font-size:11px}.mobile-nav button.active{background:#ffffff20}.heading .primary{width:100%}}
 
-.auth-screen{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#173f32,#24634c)}
+.role-screen{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#173f32,#24634c)}.role-wrap{width:min(100%,760px);background:#fff;border-radius:20px;padding:34px;box-shadow:0 18px 60px #102b2055}.role-wrap h2{text-align:center;margin:0 0 5px;font-size:21px}.role-intro,.role-foot{text-align:center;color:var(--muted);font-size:13px}.role-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}.role-option{min-width:0;border:1px solid var(--line);background:#fff;border-radius:14px;padding:22px 14px;display:flex;flex-direction:column;align-items:center;gap:9px;color:var(--ink);text-align:center;transition:.15s}.role-option:hover,.role-option:focus{border-color:var(--green2);background:#f2f7f0;transform:translateY(-2px)}.role-icon{width:48px;height:48px;border-radius:14px;background:#e8f1e5;color:var(--green);display:grid;place-items:center;font-size:25px}.role-option strong{font-size:15px}.role-option small{font-size:12px;line-height:1.4;color:var(--muted)}.back-role{border:0;background:transparent;color:var(--green2);padding:0 0 18px;font-weight:700}.role-foot{margin:20px 0 0}.auth-screen{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#173f32,#24634c)}
 .auth-card{width:min(100%,430px);background:#fff;border-radius:20px;padding:34px;box-shadow:0 18px 60px #102b2055}
 .auth-brand{text-align:center;margin-bottom:25px}.auth-brand .brand-mark{margin:0 auto 10px;width:52px;height:52px;font-size:28px}
 .auth-brand h1{margin:0;color:var(--green);font-size:27px}.auth-brand p{margin:4px 0;color:var(--muted);font-size:13px}
@@ -20,14 +20,32 @@
 .auth-count{text-align:center;border-top:1px solid var(--line);margin-top:22px;padding-top:16px;color:var(--muted);font-size:13px}.auth-count strong{color:var(--green);font-size:20px;display:block}
 .logout{border:1px solid var(--line);background:white;border-radius:8px;padding:9px 13px;color:var(--green);font-size:13px;font-weight:750;white-space:nowrap}.logout-floating{position:fixed;right:22px;bottom:22px;z-index:1000;background:#b84c43;color:#fff;border:0;border-radius:999px;padding:13px 19px;font-weight:750;box-shadow:0 5px 18px #0003}.logout-floating:hover{background:#963a34}@media(max-width:650px){.logout-floating{right:14px;bottom:14px;padding:12px 16px}}
 [hidden]{display:none!important}
+.role-option:focus-visible,.back-role:focus-visible{outline:3px solid #9bc79d;outline-offset:3px}
+@media(max-width:650px){.role-wrap{padding:24px 18px}.role-options{grid-template-columns:1fr;gap:10px}.role-option{display:grid;grid-template-columns:48px 1fr;grid-template-rows:auto auto;text-align:left;justify-items:start;padding:13px;column-gap:13px}.role-icon{grid-row:1/3}.role-option strong{align-self:end}.role-option small{align-self:start}.auth-card{padding:25px 20px}}
+
 
 </style>
 </head>
 <body>
 
-<div class="auth-screen" id="authScreen">
-  <div class="auth-card">
+<div class="role-screen" id="roleScreen">
+  <div class="role-wrap">
     <div class="auth-brand"><div class="brand-mark">⌁</div><h1>AgroTrace</h1><p>Sistema de Gestión Agrícola</p></div>
+    <h2>Selecciona tu panel</h2>
+    <p class="role-intro">Elige el tipo de acceso al que deseas ingresar.</p>
+    <div class="role-options">
+      <button class="role-option" type="button" data-role="admin"><span class="role-icon">♙</span><strong>Administrador</strong><small>Administración de usuarios y vista general</small></button>
+      <button class="role-option" type="button" data-role="empleado"><span class="role-icon">♧</span><strong>Empleado</strong><small>Acopio, pagos, calidad y trazabilidad</small></button>
+      <button class="role-option" type="button" data-role="analista"><span class="role-icon">▥</span><strong>Analista</strong><small>Pronóstico de cosechas e informes</small></button>
+    </div>
+    <p class="role-foot">Después de elegir el panel, ingresa tus credenciales.</p>
+  </div>
+</div>
+
+<div class="auth-screen" id="authScreen" hidden>
+  <div class="auth-card">
+    <button type="button" class="back-role" id="backRoleBtn">← Cambiar panel</button>
+    <div class="auth-brand"><div class="brand-mark">⌁</div><h1>AgroTrace</h1><p id="selectedRoleLabel">Acceso al sistema</p></div>
     <h2>Iniciar sesión</h2>
     <form id="loginForm" class="auth-fields">
       <div><label for="loginUsername">Usuario</label><input id="loginUsername" autocomplete="username" required maxlength="40" placeholder="Escribe tu usuario"></div>
@@ -36,7 +54,7 @@
     </form>
     <div id="authMessage" class="auth-message" role="status"></div>
     <div class="auth-count">Cuentas registradas en este navegador<strong id="accountCount">0</strong></div>
-    <p style="font-size:11px;color:var(--muted);text-align:center;margin:15px 0 0">Si escribes un usuario nuevo, se creará una cuenta automáticamente.</p>
+    <p style="font-size:11px;color:var(--muted);text-align:center;margin:15px 0 0">Si el usuario es nuevo, se creará automáticamente en el panel seleccionado.</p>
   </div>
 </div>
 
@@ -50,14 +68,15 @@
 <button data-page="calidad"><span class="ico">◇</span>Control de calidad</button>
 <button data-page="pronostico"><span class="ico">⌁</span>Pronóstico de cosechas</button>
 <button data-page="trazabilidad"><span class="ico">◎</span>Trazabilidad</button>
-<button data-page="reportes"><span class="ico">▤</span>Informes</button>
+<button data-page="reportes" data-roles="admin analista"><span class="ico">▤</span>Informes</button>
+<button data-page="usuarios" data-roles="admin"><span class="ico">♙</span>Usuarios</button>
 </nav>
 <div class="side-note">Prototipo web interactivo<br>AgroTrace</div><button class="sidebar-logout" id="sideLogoutBtn" type="button">↪ Cerrar sesión</button>
 </aside>
 <main class="main">
 <header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="mobile-menu" id="menuBtn" aria-label="Abrir menú">☰</button><strong id="topTitle">Panel principal</strong></div><div class="user"><span id="activeUsername">Usuario</span><div class="avatar" id="userAvatar">U</div><button class="logout" id="logoutBtn" type="button">Cerrar sesión</button></div></header>
 <nav class="mobile-nav" id="mobileNav">
-<button class="active" data-page="dashboard">Panel</button><button data-page="acopio">Acopio</button><button data-page="pagos">Pagos</button><button data-page="calidad">Calidad</button><button data-page="pronostico">Pronóstico</button><button data-page="trazabilidad">Trazabilidad</button><button data-page="reportes">Informes</button>
+<button class="active" data-page="dashboard">Panel</button><button data-page="acopio">Acopio</button><button data-page="pagos">Pagos</button><button data-page="calidad">Calidad</button><button data-page="pronostico">Pronóstico</button><button data-page="trazabilidad">Trazabilidad</button><button data-page="reportes" data-roles="admin analista">Informes</button><button data-page="usuarios" data-roles="admin">Usuarios</button>
 </nav>
 <button class="logout-floating" id="logoutFloatingBtn" type="button">↪ Cerrar sesión</button>
 <div class="content">
@@ -106,6 +125,11 @@
 <div class="card form-card"><h3>Consultar lote</h3><div class="field"><label for="traceCode">Código de lote</label><input id="traceCode" placeholder="Ej. LOT-001"></div><div class="actions"><button class="primary" id="traceBtn">Consultar trazabilidad</button></div><div class="result" id="traceResult"></div></div>
 <div class="card" style="margin-top:17px"><h3>Certificado de trazabilidad</h3><p style="color:var(--muted);font-size:13px">Consulta un lote y genera una vista imprimible de su información de origen.</p><button class="ghost" id="printBtn">Imprimir certificado</button></div>
 </section>
+<section class="panel" id="usuarios">
+<div class="heading"><div><div class="eyebrow">Administración</div><h1>Usuarios registrados</h1><p>Consulta las cuentas creadas y administra su perfil de acceso.</p></div></div>
+<div class="stats"><div class="card"><div class="stat-label">Cuentas registradas</div><div class="stat-value" id="adminUserCount">0</div></div></div>
+<div class="card"><h3>Usuarios que han ingresado</h3><div class="table-wrap"><table><thead><tr><th>Usuario</th><th>Panel asignado</th><th>Fecha de registro</th></tr></thead><tbody id="adminUsersRows"></tbody></table></div><p style="font-size:11px;color:var(--muted);margin:12px 0 0">Las cuentas se guardan únicamente en este navegador.</p></div>
+</section>
 <section class="panel" id="reportes">
 <div class="heading"><div><div class="eyebrow">Información de gestión</div><h1>Informes</h1><p>Resumen de los registros del prototipo.</p></div><button class="primary" id="reportBtn">Exportar informe</button></div>
 <div class="stats"><div class="card"><div class="stat-label">Registros de acopio</div><div class="stat-value" id="reportAcopio">1</div></div><div class="card"><div class="stat-label">Pagos</div><div class="stat-value" id="reportPagos">1</div></div><div class="card"><div class="stat-label">Revisiones de calidad</div><div class="stat-value" id="reportCalidad">2</div></div><div class="card"><div class="stat-label">Lotes consultados</div><div class="stat-value" id="reportLotes">12</div></div></div>
@@ -118,13 +142,37 @@
 
 const USERS_KEY="agrotrace_users_v1";
 const SESSION_KEY="agrotrace_session_v1";
+let selectedRole=null;
+let currentUser=null;
+const roleNames={admin:"Administrador",empleado:"Empleado",analista:"Analista"};
 function readUsers(){try{const value=JSON.parse(localStorage.getItem(USERS_KEY)||"[]");return Array.isArray(value)?value:[]}catch{return []}}
-function updateAccountCount(){document.getElementById("accountCount").textContent=readUsers().length}
+function saveUsers(users){localStorage.setItem(USERS_KEY,JSON.stringify(users))}
+function updateAccountCount(){const el=document.getElementById("accountCount");if(el)el.textContent=readUsers().length}
 function showAuthMessage(message,type){const el=document.getElementById("authMessage");el.textContent=message;el.className="auth-message "+type}
-function showApplication(username){document.getElementById("authScreen").hidden=true;document.getElementById("appShell").hidden=false;document.getElementById("activeUsername").textContent=username;document.getElementById("userAvatar").textContent=username.charAt(0).toUpperCase()}
+function chooseRole(role){selectedRole=role;document.getElementById("roleScreen").hidden=true;document.getElementById("authScreen").hidden=false;document.getElementById("selectedRoleLabel").textContent=roleNames[role];document.getElementById("loginUsername").focus();showAuthMessage("","");}
+document.querySelectorAll("[data-role]").forEach(btn=>btn.addEventListener("click",()=>chooseRole(btn.dataset.role)));
+document.getElementById("backRoleBtn").addEventListener("click",()=>{document.getElementById("authScreen").hidden=true;document.getElementById("roleScreen").hidden=false;document.getElementById("loginForm").reset();selectedRole=null});
+function showApplication(user){
+ currentUser=user;
+ document.getElementById("roleScreen").hidden=true;
+ document.getElementById("authScreen").hidden=true;
+ document.getElementById("appShell").hidden=false;
+ document.getElementById("activeUsername").textContent=user.username+" · "+roleNames[user.role];
+ document.getElementById("userAvatar").textContent=user.username.charAt(0).toUpperCase();
+ document.querySelectorAll("[data-page]").forEach(btn=>{
+   const allowed=(btn.dataset.roles||"admin empleado analista").split(" ");
+   btn.hidden=!allowed.includes(user.role);
+ });
+ document.querySelectorAll(".panel").forEach(panel=>panel.classList.remove("active"));
+ const home=user.role==="analista"?"pronostico":"dashboard";
+ document.getElementById(home).classList.add("active");
+ document.getElementById("topTitle").textContent=titles[home];
+ if(user.role==="admin")renderAdminUsers();
+}
 async function passwordHash(password){const bytes=new TextEncoder().encode(password);const digest=await crypto.subtle.digest("SHA-256",bytes);return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,"0")).join("")}
 document.getElementById("loginForm").addEventListener("submit",async e=>{
  e.preventDefault();
+ if(!selectedRole)return;
  const username=document.getElementById("loginUsername").value.trim();
  const normalized=username.toLocaleLowerCase("es");
  const password=document.getElementById("loginPassword").value;
@@ -135,34 +183,54 @@ document.getElementById("loginForm").addEventListener("submit",async e=>{
  const hash=await passwordHash(password);
  if(existing){
    if(existing.passwordHash!==hash){showAuthMessage("La contraseña no es correcta para este usuario.","error");return}
-   sessionStorage.setItem(SESSION_KEY,existing.username);
-   showApplication(existing.username);
+   if(existing.role && existing.role!==selectedRole){showAuthMessage("Esta cuenta pertenece al panel "+roleNames[existing.role]+". Selecciona ese panel para ingresar.","error");return}
+   if(!existing.role){existing.role=selectedRole;saveUsers(users)}
+   currentUser=existing;
  }else{
-   const newUser={username,usernameNormalized:normalized,passwordHash:hash,createdAt:new Date().toISOString()};
-   users.push(newUser);
-   localStorage.setItem(USERS_KEY,JSON.stringify(users));
-   sessionStorage.setItem(SESSION_KEY,username);
-   updateAccountCount();
-   showApplication(username);
+   currentUser={username,usernameNormalized:normalized,passwordHash:hash,role:selectedRole,createdAt:new Date().toISOString()};
+   users.push(currentUser);
+   saveUsers(users);
  }
+ sessionStorage.setItem(SESSION_KEY,JSON.stringify({username:currentUser.username,role:currentUser.role}));
+ updateAccountCount();
+ showApplication(currentUser);
 });
+function renderAdminUsers(){
+ const users=readUsers();
+ document.getElementById("adminUserCount").textContent=users.length;
+ const tbody=document.getElementById("adminUsersRows");
+ tbody.replaceChildren();
+ users.forEach(user=>{
+   const tr=document.createElement("tr");
+   const name=document.createElement("td");name.textContent=user.username;
+   const role=document.createElement("td");role.textContent=roleNames[user.role]||"Sin perfil";
+   const date=document.createElement("td");date.textContent=user.createdAt?new Date(user.createdAt).toLocaleDateString("es-EC"):"Anterior";
+   tr.append(name,role,date);tbody.appendChild(tr);
+ });
+}
 function closeAgroTraceSession(){
  sessionStorage.removeItem(SESSION_KEY);
+ currentUser=null;selectedRole=null;
  document.getElementById("appShell").hidden=true;
- document.getElementById("authScreen").hidden=false;
+ document.getElementById("authScreen").hidden=true;
+ document.getElementById("roleScreen").hidden=false;
  document.getElementById("loginForm").reset();
- showAuthMessage("Sesión cerrada. Puedes volver a ingresar.","success");
+ showAuthMessage("","");updateAccountCount();
 }
 document.getElementById("logoutBtn").addEventListener("click",closeAgroTraceSession);
 document.getElementById("logoutFloatingBtn").addEventListener("click",closeAgroTraceSession);
 document.getElementById("sideLogoutBtn").addEventListener("click",closeAgroTraceSession);
 updateAccountCount();
-const savedSession=sessionStorage.getItem(SESSION_KEY);
-if(savedSession&&readUsers().some(u=>u.username===savedSession)){showApplication(savedSession)}
-
-const titles={dashboard:"Panel principal",acopio:"Acopio",pagos:"Pagos",calidad:"Control de calidad",pronostico:"Pronóstico de cosechas",trazabilidad:"Trazabilidad",reportes:"Informes"};
+try{
+ const savedSession=JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null");
+ if(savedSession){
+   const savedUser=readUsers().find(u=>u.username===savedSession.username&&u.role===savedSession.role);
+   if(savedUser)showApplication(savedUser);
+ }
+}catch{sessionStorage.removeItem(SESSION_KEY)}
+const titles={usuarios:"Usuarios",dashboard:"Panel principal",acopio:"Acopio",pagos:"Pagos",calidad:"Control de calidad",pronostico:"Pronóstico de cosechas",trazabilidad:"Trazabilidad",reportes:"Informes"};
 const data={acopio:[],pagos:[],calidad:[]};let currentLot=null;
-function navigate(page){document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===page));document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));document.getElementById("topTitle").textContent=titles[page];document.getElementById("mobileNav").classList.remove("open");if(page==="reportes")refreshReports();window.scrollTo({top:0,behavior:"smooth"})}
+function navigate(page){if(!currentUser)return;const target=document.querySelector("[data-page=\\""+page+"\\"]");if(target&&target.hidden)return;if(page==="usuarios"&&currentUser.role!=="admin")return;document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===page));document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));document.getElementById("topTitle").textContent=titles[page];document.getElementById("mobileNav").classList.remove("open");if(page==="reportes")refreshReports();if(page==="usuarios")renderAdminUsers();window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
 document.getElementById("menuBtn").addEventListener("click",()=>document.getElementById("mobileNav").classList.toggle("open"));
 function addRow(id,cells){const tr=document.createElement("tr");cells.forEach(c=>{const td=document.createElement("td");td.textContent=c;tr.appendChild(td)});document.getElementById(id).prepend(tr)}
@@ -173,8 +241,7 @@ document.getElementById("forecastBtn").addEventListener("click",()=>{const p=fPr
 document.getElementById("traceBtn").addEventListener("click",()=>{const code=traceCode.value.trim();if(!code)return;currentLot=code;const el=document.getElementById("traceResult");el.style.display="block";const found=data.acopio.find(x=>x.lote.toLowerCase()===code.toLowerCase());el.textContent=found?"Lote "+found.lote+" · Producto: "+found.producto+" · Socio: "+found.socio+" · Peso: "+found.peso+" kg · Calidad: "+found.calidad:"Lote "+code+" · Registro de demostración. No se encontraron datos adicionales."});
 document.getElementById("printBtn").addEventListener("click",()=>{if(!currentLot){alert("Primero consulta un código de lote.");return}const w=window.open("","_blank");w.document.write("<h1>AgroTrace</h1><h2>Certificado de trazabilidad</h2><p>Código de lote: "+currentLot.replace(/[<>&"]/g,"")+"</p><p>Documento demostrativo del prototipo.</p>");w.document.close();w.print()});
 function refreshReports(){reportAcopio.textContent=1+data.acopio.length;reportPagos.textContent=1+data.pagos.length;reportCalidad.textContent=2+data.calidad.length;reportSummary.textContent="Acopios nuevos: "+data.acopio.length+" · Pagos nuevos: "+data.pagos.length+" · Revisiones nuevas: "+data.calidad.length}
-document.getElementById("reportBtn").addEventListener("click",()=>{refreshReports();const rows=[["Tipo","Cantidad"],["Acopio",1+data.acopio.length],["Pagos",1+data.pagos.length],["Revisiones de calidad",2+data.calidad.length]];const csv=rows.map(r=>r.join(";")).join("
-");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download="informe-agrotrace.csv";a.click();URL.revokeObjectURL(a.href)});
+document.getElementById("reportBtn").addEventListener("click",()=>{refreshReports();const rows=[["Tipo","Cantidad"],["Acopio",1+data.acopio.length],["Pagos",1+data.pagos.length],["Revisiones de calidad",2+data.calidad.length]];const csv=rows.map(r=>r.join(";")).join("\\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download="informe-agrotrace.csv";a.click();URL.revokeObjectURL(a.href)});
 </script>
 </body>
 </html>
