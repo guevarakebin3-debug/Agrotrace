@@ -36,7 +36,7 @@
     <div class="role-options">
       <button class="role-option" type="button" data-role="admin"><span class="role-icon">♙</span><strong>Administrador</strong><small>Administración de usuarios y vista general</small></button>
       <button class="role-option" type="button" data-role="empleado"><span class="role-icon">♧</span><strong>Empleado</strong><small>Acopio, pagos, calidad y trazabilidad</small></button>
-      <button class="role-option" type="button" data-role="analista"><span class="role-icon">▥</span><strong>Analista</strong><small>Pronóstico de cosechas e informes</small></button>
+      <button class="role-option" type="button" data-role="gerente"><span class="role-icon">▥</span><strong>Gerente</strong><small>Pronóstico de cosechas e informes</small></button>
     </div>
     <p class="role-foot">Después de elegir el panel, ingresa tus credenciales.</p>
   </div>
@@ -66,9 +66,9 @@
 <button data-page="acopio" data-roles="admin empleado"><span class="ico">⚖</span>Acopio</button>
 <button data-page="pagos" data-roles="admin empleado"><span class="ico">＄</span>Pagos</button>
 <button data-page="calidad" data-roles="admin empleado"><span class="ico">◇</span>Control de calidad</button>
-<button data-page="pronostico" data-roles="admin analista"><span class="ico">⌁</span>Pronóstico de cosechas</button>
+<button data-page="pronostico" data-roles="admin gerente"><span class="ico">⌁</span>Pronóstico de cosechas</button>
 <button data-page="trazabilidad" data-roles="admin empleado"><span class="ico">◎</span>Trazabilidad</button>
-<button data-page="reportes" data-roles="admin analista"><span class="ico">▤</span>Informes</button>
+<button data-page="reportes" data-roles="admin gerente"><span class="ico">▤</span>Informes</button>
 <button data-page="usuarios" data-roles="admin"><span class="ico">♙</span>Usuarios</button>
 </nav>
 <div class="side-note">Prototipo web interactivo<br>AgroTrace</div><button class="sidebar-logout" id="sideLogoutBtn" type="button">↪ Cerrar sesión</button>
@@ -76,7 +76,7 @@
 <main class="main">
 <header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="mobile-menu" id="menuBtn" aria-label="Abrir menú">☰</button><strong id="topTitle">Panel principal</strong></div><div class="user"><span id="activeUsername">Usuario</span><div class="avatar" id="userAvatar">U</div><button class="logout" id="logoutBtn" type="button">Cerrar sesión</button></div></header>
 <nav class="mobile-nav" id="mobileNav">
-<button class="active" data-page="dashboard">Panel</button><button data-page="acopio" data-roles="admin empleado">Acopio</button><button data-page="pagos" data-roles="admin empleado">Pagos</button><button data-page="calidad" data-roles="admin empleado">Calidad</button><button data-page="pronostico" data-roles="admin analista">Pronóstico</button><button data-page="trazabilidad" data-roles="admin empleado">Trazabilidad</button><button data-page="reportes" data-roles="admin analista">Informes</button><button data-page="usuarios" data-roles="admin">Usuarios</button>
+<button class="active" data-page="dashboard">Panel</button><button data-page="acopio" data-roles="admin empleado">Acopio</button><button data-page="pagos" data-roles="admin empleado">Pagos</button><button data-page="calidad" data-roles="admin empleado">Calidad</button><button data-page="pronostico" data-roles="admin gerente">Pronóstico</button><button data-page="trazabilidad" data-roles="admin empleado">Trazabilidad</button><button data-page="reportes" data-roles="admin gerente">Informes</button><button data-page="usuarios" data-roles="admin">Usuarios</button>
 </nav>
 <button class="logout-floating" id="logoutFloatingBtn" type="button">↪ Cerrar sesión</button>
 <div class="content">
@@ -144,7 +144,7 @@ const USERS_KEY="agrotrace_users_v1";
 const SESSION_KEY="agrotrace_session_v1";
 let selectedRole=null;
 let currentUser=null;
-const roleNames={admin:"Administrador",empleado:"Empleado",analista:"Analista"};
+const roleNames={admin:"Administrador",empleado:"Empleado",gerente:"Gerente"};
 const titles={usuarios:"Usuarios",dashboard:"Panel principal",acopio:"Acopio",pagos:"Pagos",calidad:"Control de calidad",pronostico:"Pronóstico de cosechas",trazabilidad:"Trazabilidad",reportes:"Informes"};
 function readUsers(){try{const value=JSON.parse(localStorage.getItem(USERS_KEY)||"[]");return Array.isArray(value)?value:[]}catch{return []}}
 function saveUsers(users){localStorage.setItem(USERS_KEY,JSON.stringify(users))}
@@ -161,11 +161,11 @@ function showApplication(user){
  document.getElementById("activeUsername").textContent=user.username+" · "+roleNames[user.role];
  document.getElementById("userAvatar").textContent=user.username.charAt(0).toUpperCase();
  document.querySelectorAll("[data-page]").forEach(btn=>{
-   const allowed=(btn.dataset.roles||"admin empleado analista").split(" ");
+   const allowed=(btn.dataset.roles||"admin empleado gerente").split(" ");
    btn.hidden=!allowed.includes(user.role);
  });
  document.querySelectorAll(".panel").forEach(panel=>panel.classList.remove("active"));
- const home=user.role==="analista"?"pronostico":"dashboard";
+ const home=user.role==="gerente"?"pronostico":"dashboard";
  document.getElementById(home).classList.add("active");
  document.getElementById("topTitle").textContent=titles[home];
  if(user.role==="admin")renderAdminUsers();
