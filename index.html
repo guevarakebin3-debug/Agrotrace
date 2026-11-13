@@ -59,7 +59,8 @@
 <nav class="mobile-nav" id="mobileNav">
 <button class="active" data-page="dashboard">Panel</button><button data-page="acopio">Acopio</button><button data-page="pagos">Pagos</button><button data-page="calidad">Calidad</button><button data-page="pronostico">Pronóstico</button><button data-page="trazabilidad">Trazabilidad</button><button data-page="reportes">Informes</button>
 </nav>
-<button class="logout-floating" id="logoutFloatingBtn" type="button">↪ Cerrar sesión</button>\n<div class="content">
+<button class="logout-floating" id="logoutFloatingBtn" type="button">↪ Cerrar sesión</button>
+<div class="content">
 <section class="panel active" id="dashboard">
 <div class="heading"><div><div class="eyebrow">Resumen general</div><h1>Panel principal</h1><p>Vista general de la actividad agrícola.</p></div><button class="primary" onclick="navigate('acopio')">＋ Registrar acopio</button></div>
 <div class="stats">
@@ -151,7 +152,9 @@ function closeAgroTraceSession(){
  document.getElementById("authScreen").hidden=false;
  document.getElementById("loginForm").reset();
  showAuthMessage("Sesión cerrada. Puedes volver a ingresar.","success");
-});
+}
+document.getElementById("logoutBtn").addEventListener("click",closeAgroTraceSession);
+document.getElementById("logoutFloatingBtn").addEventListener("click",closeAgroTraceSession);
 updateAccountCount();
 const savedSession=sessionStorage.getItem(SESSION_KEY);
 if(savedSession&&readUsers().some(u=>u.username===savedSession)){showApplication(savedSession)}
