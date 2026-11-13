@@ -63,11 +63,11 @@
 <div class="brand"><div class="brand-mark">⌁</div><div>AgroTrace<small>GESTIÓN AGRÍCOLA</small></div></div>
 <nav class="nav" id="sideNav">
 <button class="active" data-page="dashboard"><span class="ico">▦</span>Panel principal</button>
-<button data-page="acopio"><span class="ico">⚖</span>Acopio</button>
-<button data-page="pagos"><span class="ico">＄</span>Pagos</button>
-<button data-page="calidad"><span class="ico">◇</span>Control de calidad</button>
-<button data-page="pronostico"><span class="ico">⌁</span>Pronóstico de cosechas</button>
-<button data-page="trazabilidad"><span class="ico">◎</span>Trazabilidad</button>
+<button data-page="acopio" data-roles="admin empleado"><span class="ico">⚖</span>Acopio</button>
+<button data-page="pagos" data-roles="admin empleado"><span class="ico">＄</span>Pagos</button>
+<button data-page="calidad" data-roles="admin empleado"><span class="ico">◇</span>Control de calidad</button>
+<button data-page="pronostico" data-roles="admin analista"><span class="ico">⌁</span>Pronóstico de cosechas</button>
+<button data-page="trazabilidad" data-roles="admin empleado"><span class="ico">◎</span>Trazabilidad</button>
 <button data-page="reportes" data-roles="admin analista"><span class="ico">▤</span>Informes</button>
 <button data-page="usuarios" data-roles="admin"><span class="ico">♙</span>Usuarios</button>
 </nav>
@@ -76,7 +76,7 @@
 <main class="main">
 <header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="mobile-menu" id="menuBtn" aria-label="Abrir menú">☰</button><strong id="topTitle">Panel principal</strong></div><div class="user"><span id="activeUsername">Usuario</span><div class="avatar" id="userAvatar">U</div><button class="logout" id="logoutBtn" type="button">Cerrar sesión</button></div></header>
 <nav class="mobile-nav" id="mobileNav">
-<button class="active" data-page="dashboard">Panel</button><button data-page="acopio">Acopio</button><button data-page="pagos">Pagos</button><button data-page="calidad">Calidad</button><button data-page="pronostico">Pronóstico</button><button data-page="trazabilidad">Trazabilidad</button><button data-page="reportes" data-roles="admin analista">Informes</button><button data-page="usuarios" data-roles="admin">Usuarios</button>
+<button class="active" data-page="dashboard">Panel</button><button data-page="acopio" data-roles="admin empleado">Acopio</button><button data-page="pagos" data-roles="admin empleado">Pagos</button><button data-page="calidad" data-roles="admin empleado">Calidad</button><button data-page="pronostico" data-roles="admin analista">Pronóstico</button><button data-page="trazabilidad" data-roles="admin empleado">Trazabilidad</button><button data-page="reportes" data-roles="admin analista">Informes</button><button data-page="usuarios" data-roles="admin">Usuarios</button>
 </nav>
 <button class="logout-floating" id="logoutFloatingBtn" type="button">↪ Cerrar sesión</button>
 <div class="content">
@@ -145,6 +145,7 @@ const SESSION_KEY="agrotrace_session_v1";
 let selectedRole=null;
 let currentUser=null;
 const roleNames={admin:"Administrador",empleado:"Empleado",analista:"Analista"};
+const titles={usuarios:"Usuarios",dashboard:"Panel principal",acopio:"Acopio",pagos:"Pagos",calidad:"Control de calidad",pronostico:"Pronóstico de cosechas",trazabilidad:"Trazabilidad",reportes:"Informes"};
 function readUsers(){try{const value=JSON.parse(localStorage.getItem(USERS_KEY)||"[]");return Array.isArray(value)?value:[]}catch{return []}}
 function saveUsers(users){localStorage.setItem(USERS_KEY,JSON.stringify(users))}
 function updateAccountCount(){const el=document.getElementById("accountCount");if(el)el.textContent=readUsers().length}
@@ -228,7 +229,6 @@ try{
    if(savedUser)showApplication(savedUser);
  }
 }catch{sessionStorage.removeItem(SESSION_KEY)}
-const titles={usuarios:"Usuarios",dashboard:"Panel principal",acopio:"Acopio",pagos:"Pagos",calidad:"Control de calidad",pronostico:"Pronóstico de cosechas",trazabilidad:"Trazabilidad",reportes:"Informes"};
 const data={acopio:[],pagos:[],calidad:[]};let currentLot=null;
 function navigate(page){if(!currentUser)return;const target=Array.from(document.querySelectorAll("[data-page]")).find(b=>b.dataset.page===page);if(target&&target.hidden)return;if(page==="usuarios"&&currentUser.role!=="admin")return;document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===page));document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));document.getElementById("topTitle").textContent=titles[page];document.getElementById("mobileNav").classList.remove("open");if(page==="reportes")refreshReports();if(page==="usuarios")renderAdminUsers();window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
