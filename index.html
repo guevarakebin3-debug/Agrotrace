@@ -154,7 +154,8 @@ function closeAgroTraceSession(){
  showAuthMessage("Sesión cerrada. Puedes volver a ingresar.","success");
 }
 document.getElementById("logoutBtn").addEventListener("click",closeAgroTraceSession);
-document.getElementById("logoutFloatingBtn").addEventListener("click",closeAgroTraceSession);\ndocument.getElementById("sideLogoutBtn").addEventListener("click",closeAgroTraceSession);
+document.getElementById("logoutFloatingBtn").addEventListener("click",closeAgroTraceSession);
+document.getElementById("sideLogoutBtn").addEventListener("click",closeAgroTraceSession);
 updateAccountCount();
 const savedSession=sessionStorage.getItem(SESSION_KEY);
 if(savedSession&&readUsers().some(u=>u.username===savedSession)){showApplication(savedSession)}
@@ -172,7 +173,8 @@ document.getElementById("forecastBtn").addEventListener("click",()=>{const p=fPr
 document.getElementById("traceBtn").addEventListener("click",()=>{const code=traceCode.value.trim();if(!code)return;currentLot=code;const el=document.getElementById("traceResult");el.style.display="block";const found=data.acopio.find(x=>x.lote.toLowerCase()===code.toLowerCase());el.textContent=found?"Lote "+found.lote+" · Producto: "+found.producto+" · Socio: "+found.socio+" · Peso: "+found.peso+" kg · Calidad: "+found.calidad:"Lote "+code+" · Registro de demostración. No se encontraron datos adicionales."});
 document.getElementById("printBtn").addEventListener("click",()=>{if(!currentLot){alert("Primero consulta un código de lote.");return}const w=window.open("","_blank");w.document.write("<h1>AgroTrace</h1><h2>Certificado de trazabilidad</h2><p>Código de lote: "+currentLot.replace(/[<>&"]/g,"")+"</p><p>Documento demostrativo del prototipo.</p>");w.document.close();w.print()});
 function refreshReports(){reportAcopio.textContent=1+data.acopio.length;reportPagos.textContent=1+data.pagos.length;reportCalidad.textContent=2+data.calidad.length;reportSummary.textContent="Acopios nuevos: "+data.acopio.length+" · Pagos nuevos: "+data.pagos.length+" · Revisiones nuevas: "+data.calidad.length}
-document.getElementById("reportBtn").addEventListener("click",()=>{refreshReports();const rows=[["Tipo","Cantidad"],["Acopio",1+data.acopio.length],["Pagos",1+data.pagos.length],["Revisiones de calidad",2+data.calidad.length]];const csv=rows.map(r=>r.join(";")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download="informe-agrotrace.csv";a.click();URL.revokeObjectURL(a.href)});
+document.getElementById("reportBtn").addEventListener("click",()=>{refreshReports();const rows=[["Tipo","Cantidad"],["Acopio",1+data.acopio.length],["Pagos",1+data.pagos.length],["Revisiones de calidad",2+data.calidad.length]];const csv=rows.map(r=>r.join(";")).join("
+");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download="informe-agrotrace.csv";a.click();URL.revokeObjectURL(a.href)});
 </script>
 </body>
 </html>
