@@ -204,10 +204,22 @@ function renderAdminUsers(){
  users.forEach(user=>{
    const tr=document.createElement("tr");
    const name=document.createElement("td");name.textContent=user.username;
-   const role=document.createElement("td");role.textContent=roleNames[user.role]||"Sin perfil";
+   const role=document.createElement("td");
+   const roleSelect=document.createElement("select");
+   Object.entries(roleNames).forEach(([value,label])=>{const option=document.createElement("option");option.value=value;option.textContent=label;roleSelect.appendChild(option)});
+   roleSelect.value=user.role||"empleado";
+   roleSelect.disabled=!!(currentUser&&currentUser.username===user.username);
+   roleSelect.addEventListener("change",()=>changeUserRole(user.username,roleSelect.value));
+   role.appendChild(roleSelect);
    const date=document.createElement("td");date.textContent=user.createdAt?new Date(user.createdAt).toLocaleDateString("es-EC"):"Anterior";
    tr.append(name,role,date);tbody.appendChild(tr);
  });
+}
+function changeUserRole(username,newRole){
+ const users=readUsers();
+ const user=users.find(item=>item.username===username);
+ if(!user||!roleNames[newRole])return;
+ user.role=newRole;saveUsers(users);renderAdminUsers();
 }
 function closeAgroTraceSession(){
  sessionStorage.removeItem(SESSION_KEY);
